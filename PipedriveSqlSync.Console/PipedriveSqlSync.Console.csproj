@@ -4,15 +4,17 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{EDD0F21B-D170-4A20-B5BC-5F22A7E53179}</ProjectGuid>
-    <OutputType>Library</OutputType>
+    <ProjectGuid>{AAFCC2AA-87C4-4DF3-AC17-EF9CF7D63F8B}</ProjectGuid>
+    <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>PipedriveSqlSync</RootNamespace>
-    <AssemblyName>PipedriveSqlSync</AssemblyName>
+    <RootNamespace>PipedriveSqlSync.Console</RootNamespace>
+    <AssemblyName>PipedriveSqlSync.Console</AssemblyName>
     <TargetFrameworkVersion>v4.6.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
@@ -22,6 +24,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
@@ -32,10 +35,6 @@
   <ItemGroup>
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="EntityFramework.Extended, Version=6.0.0.0, Culture=neutral, PublicKeyToken=05b7e29bdd433584, processorArchitecture=MSIL">
-      <HintPath>..\packages\EntityFramework.Extended.Async.6.1.1.0\lib\net45\EntityFramework.Extended.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
@@ -53,44 +52,24 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Database\Note.cs" />
-    <Compile Include="EntitySyncs\ActivityEntitySync.cs" />
-    <Compile Include="EntitySyncs\DealEntitySync.cs" />
-    <Compile Include="EntitySyncs\EntitySync.cs" />
-    <Compile Include="EntitySyncs\IEntitySync.cs" />
-    <Compile Include="EntitySyncs\NoteEntitySync.cs" />
-    <Compile Include="EntitySyncs\OrganizationEntitySync.cs" />
-    <Compile Include="EntitySyncs\PersonEntitySync.cs" />
-    <Compile Include="ILogger.cs" />
-    <Compile Include="Migrations\201702281458567_Initial.cs" />
-    <Compile Include="Migrations\201702281458567_Initial.Designer.cs">
-      <DependentUpon>201702281458567_Initial.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\Configuration.cs" />
-    <Compile Include="Database\Activity.cs" />
-    <Compile Include="Database\Deal.cs" />
-    <Compile Include="Database\Person.cs" />
-    <Compile Include="Database\Organization.cs" />
-    <Compile Include="PipedriveDbContext.cs" />
+    <Compile Include="ConsoleLogger.cs" />
+    <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="PipedriveSqlSyncEngine.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\PipeDriveApi\Source\PipeDriveApi\PipeDriveApi\PipeDriveApi.csproj">
-      <Project>{43699b67-32e1-487a-8eec-3998332b4f35}</Project>
-      <Name>PipeDriveApi</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201702281458567_Initial.resx">
-      <DependentUpon>201702281458567_Initial.cs</DependentUpon>
-    </EmbeddedResource>
+    <ProjectReference Include="..\PipeDriveApi\Source\PipeDriveApi\PipeDriveApi\PipeDriveApi.csproj">
+      <Project>{43699b67-32e1-487a-8eec-3998332b4f35}</Project>
+      <Name>PipeDriveApi</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\PipedriveSqlSync\PipedriveSqlSync.csproj">
+      <Project>{edd0f21b-d170-4a20-b5bc-5f22a7e53179}</Project>
+      <Name>PipedriveSqlSync</Name>
+    </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
