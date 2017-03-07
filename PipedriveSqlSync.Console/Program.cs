@@ -21,27 +21,27 @@ namespace PipedriveSqlSync.Console
                 connString = defaultConnString;
 
             System.Console.WriteLine("\r\nStarting...");
+            System.Console.WriteLine();
             var engine = new PipedriveSqlSyncEngine(apiKey, connString, new ConsoleLogger());
 
+#if !DEBUG
             try
             {
+#endif
                 engine.SynchronizeAsync().Wait();
+#if !DEBUG
             }
             catch (AggregateException ex)
             {
                 System.Console.WriteLine($"ERROR: {ex.InnerException}");
-#if DEBUG
-                throw;
-#endif
             }
             catch (Exception ex)
             {
                 System.Console.WriteLine($"ERROR: {ex}");
-#if DEBUG
-                throw;
-#endif
             }
+#endif
 
+            System.Console.WriteLine();
             System.Console.WriteLine("Press any key to exit...");
             System.Console.ReadKey();
         }
