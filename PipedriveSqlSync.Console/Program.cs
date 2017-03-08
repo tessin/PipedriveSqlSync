@@ -1,5 +1,9 @@
 ﻿using System;
+using System.Configuration;
 using System.IO;
+using System.Linq;
+using System.Xml.Linq;
+using System.Xml.Xsl;
 
 namespace PipedriveSqlSync.Console
 {
@@ -9,20 +13,47 @@ namespace PipedriveSqlSync.Console
         {
             System.Console.SetIn(new StreamReader(System.Console.OpenStandardInput(8192)));
 
-            const string defaultConnString = @"Server=(LocalDB)\MSSQLLocalDB;Database=PipedriveSqlSync;";
+            string pipedriveApiKey = null;
 
-            System.Console.Write("Enter your Pipedrive API key: ");
-            var apiKey = System.Console.ReadLine();
+            string connectionString = @"Server=(LocalDB)\MSSQLLocalDB;Database=PipedriveSqlSync;";
 
-            System.Console.WriteLine(
-                $"\r\nEnter your SQL connection string (default: \"{defaultConnString}\"):");
-            var connString = System.Console.ReadLine();
-            if (string.IsNullOrWhiteSpace(connString))
-                connString = defaultConnString;
+            string configPath = $"{Directory.GetCurrentDirectory()}\\User.config";
 
-            System.Console.WriteLine("\r\nStarting...");
+            if (File.Exists(configPath))
+            {
+                var xSettings = XDocument.Load(configPath).Root?.Element("appSettings");
+
+                connectionString =
+                    xSettings?
+                        .Elements()
+                        .FirstOrDefault(e => e.Attribute("key")?.Value == "ConnectionString")
+                        ?.Attribute("value")
+                        ?.Value;
+
+                pipedriveApiKey =
+                    xSettings?
+                        .Elements()
+                        .FirstOrDefault(e => e.Attribute("key")?.Value == "PipedriveApiKey")
+                        ?.Attribute("value")
+                        ?.Value;
+            }
+
+            if (string.IsNullOrEmpty(pipedriveApiKey))
+            {
+                System.Console.Write("Enter your Pipedrive API key: ");
+                pipedriveApiKey = System.Console.ReadLine();
+            }
+
+            if (string.IsNullOrEmpty(connectionString))
+            {
+                System.Console.WriteLine(
+                    $"Enter your SQL connection string:");
+                connectionString = System.Console.ReadLine();
+            }
+
+            System.Console.WriteLine("Starting...");
             System.Console.WriteLine();
-            var engine = new PipedriveSqlSyncEngine(apiKey, connString, new ConsoleLogger());
+            var engine = new PipedriveSqlSyncEngine(pipedriveApiKey, connectionString, new ConsoleLogger());
 
 #if !DEBUG
             try
