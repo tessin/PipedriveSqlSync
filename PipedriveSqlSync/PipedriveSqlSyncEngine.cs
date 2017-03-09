@@ -60,10 +60,12 @@ namespace PipedriveSqlSync
             _logger?.Info("Synchronizing data with the database...");
             using (var context = new PipeDriveDbContext(_sqlConnectionString, dynamicConfigurations))
             {
+                context.Configuration.AutoDetectChangesEnabled = false;
                 foreach (var syncService in syncServices)
                 {
                     syncService.Sync(context);
                 }
+                context.Configuration.AutoDetectChangesEnabled = true;
 
                 _logger?.Info("Saving to the database...");
                 await context.SaveChangesAsync();
@@ -84,13 +86,18 @@ namespace PipedriveSqlSync
 
             return new ISyncService[]
             {
-                userService, orgService, personService, dealService, activityService, noteService,
+                userService,
+                orgService,
+                personService,
+                dealService,
+                activityService,
+                noteService,
                 orgRelationshipService,
                 new ActivityFieldSyncService(_logger),
                 new ActivityTypeSyncService(_logger),
-                new PersonFieldSyncService(_logger), 
+                new PersonFieldSyncService(_logger),
                 new DealFieldSyncService(_logger),
-                new NoteFieldSyncService(_logger), 
+                new NoteFieldSyncService(_logger),
                 new OrganizationFieldSyncService(_logger)
             };
         }

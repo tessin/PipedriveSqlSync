@@ -19,6 +19,9 @@ namespace PipedriveSqlSync.Persons
             Ignore(x => x.OrgId);
             Property(x => x.DbOrgId).HasColumnName(nameof(DbPerson.OrgId));
 
+            Ignore(x => x.PictureId);
+            Property(x => x.DbPictureId).HasColumnName(nameof(DbPerson.PictureId));
+
             Ignore(x => x.Phone);
             Ignore(x => x.Email);
         }

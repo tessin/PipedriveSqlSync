@@ -1,5 +1,4 @@
-﻿using PipedriveSqlSync.Organizations;
-using PipedriveSqlSync.Users;
+﻿using PipedriveSqlSync.Users;
 using PipeDriveApi;
 
 namespace PipedriveSqlSync.Persons
@@ -18,6 +17,12 @@ namespace PipedriveSqlSync.Persons
         {
             get { return OrgId?.Id ?? -1; }
             set { OrgId = new OrganizationId { Id = value }; }
+        }
+
+        public int? DbPictureId
+        {
+            get { return PictureId?.Id; }
+            set { PictureId = value.HasValue ? new PictureId { Id = value.Value } : null; }
         }
     }
 }
