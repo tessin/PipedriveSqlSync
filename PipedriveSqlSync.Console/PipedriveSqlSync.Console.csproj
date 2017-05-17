@@ -60,6 +60,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+    <None Include="User.config.example">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="User.config">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
